@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n8n Guide 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #e0e0e0;
+            padding: 1%;
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #ff6d5a 0%, #ea4b48 100%);
+            padding: 12px 1%;
+            border-radius: 8px;
+            margin-bottom: 1%;
+            box-shadow: 0 4px 12px rgba(255, 109, 90, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        h1 {
+            font-size: 1.3em;
+            color: #fff;
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.85em;
+            margin-top: 4px;
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            height: 8px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #ffc107, #ff6d5a);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 20px;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.75em;
+            margin-top: 4px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 1%;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: #333;
+            color: #fff;
+            border: 1px solid #ff6d5a;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn:hover {
+            background: #ff6d5a;
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.active {
+            background: #ff6d5a;
+            border-color: #ffc107;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: #333;
+            border: 2px solid #ff6d5a;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg) scale(1.1);
+            background: #ff6d5a;
+        }
+
+        body.light-mode {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            color: #1a1a1a;
+        }
+
+        body.light-mode header {
+            background: linear-gradient(135deg, #ff6d5a 0%, #ea4b48 100%);
+        }
+
+        body.light-mode .difficulty-section {
+            background: #ffffff;
+            border-left-color: #ff6d5a;
+        }
+
+        body.light-mode .difficulty-header {
+            background: #f5f5f5;
+        }
+
+        body.light-mode .task-card {
+            background: #f9f9f9;
+            border-color: #ddd;
+            color: #1a1a1a;
+        }
+
+        body.light-mode .task-title {
+            color: #1a1a1a;
+        }
+
+        body.light-mode .task-desc {
+            color: #555;
+        }
+
+        body.light-mode .steps {
+            background: #efefef;
+        }
+
+        body.light-mode .step {
+            color: #333;
+        }
+
+        body.light-mode .code {
+            background: #2d2d2d;
+            color: #4ec9b0;
+        }
+
+        body.light-mode .btn {
+            background: #f5f5f5;
+            color: #1a1a1a;
+            border-color: #ff6d5a;
+        }
+
+        body.light-mode .btn:hover {
+            background: #ff6d5a;
+            color: white;
+        }
+
+        body.light-mode .theme-toggle {
+            background: #f5f5f5;
+            color: #1a1a1a;
+        }
+
+        body.light-mode footer {
+            color: #666;
+        }
+
+        .font-controls {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .font-btn {
+            background: #333;
+            color: #fff;
+            border: 1px solid #ff6d5a;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .font-btn:hover {
+            background: #ff6d5a;
+        }
+
+        body.font-small {
+            font-size: 14px;
+        }
+
+        body.font-medium {
+            font-size: 16px;
+        }
+
+        body.font-large {
+            font-size: 18px;
+        }
+
+        .bookmark-btn {
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: auto;
+        }
+
+        .bookmark-btn.bookmarked {
+            color: #ffc107;
+        }
+
+        .bookmark-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .filter-section {
+            background: #2a2a2a;
+            border-radius: 8px;
+            padding: 1%;
+            margin-bottom: 1%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .filter-label {
+            color: #ff6d5a;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .filter-btn {
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: #ff6d5a;
+            border-color: #ff6d5a;
+        }
+
+        .filter-btn:hover {
+            border-color: #ff6d5a;
+        }
+
+        .section-progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            height: 4px;
+            margin-top: 4px;
+            overflow: hidden;
+            width: 100px;
+        }
+
+        .section-progress-fill {
+            background: #ffc107;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .difficulty-section {
+            background: #2a2a2a;
+            border-radius: 8px;
+            padding: 1%;
+            margin-bottom: 1%;
+            border-left: 4px solid #ff6d5a;
+        }
+        
+        .difficulty-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px 1%;
+            background: #333;
+            border-radius: 6px;
+            margin-bottom: 1%;
+        }
+        
+        .difficulty-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #ff6d5a;
+        }
+        
+        .difficulty-badge {
+            background: #ff6d5a;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+
+        .section-progress {
+            font-size: 0.7em;
+            color: #ffc107;
+            margin-left: 8px;
+        }
+        
+        .task-card {
+            background: #333;
+            border-radius: 6px;
+            padding: 1%;
+            margin-bottom: 1%;
+            border: 1px solid #444;
+            transition: all 0.3s ease;
+        }
+        
+        .task-card:hover {
+            border-color: #ff6d5a;
+            box-shadow: 0 2px 8px rgba(255, 109, 90, 0.2);
+        }
+
+        .task-card.completed {
+            opacity: 0.7;
+            border-color: #4caf50;
+        }
+        
+        .task-title {
+            font-size: 0.95em;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .task-number {
+            background: #ff6d5a;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #ff6d5a;
+        }
+        
+        .task-desc {
+            color: #b0b0b0;
+            font-size: 0.85em;
+            margin-bottom: 8px;
+            padding-left: 32px;
+        }
+        
+        .steps {
+            background: #3a3a3a;
+            border-radius: 4px;
+            padding: 1%;
+            margin-left: 32px;
+            margin-top: 8px;
+        }
+        
+        .step {
+            color: #d0d0d0;
+            font-size: 0.8em;
+            margin-bottom: 6px;
+            padding-left: 16px;
+            position: relative;
+        }
+        
+        .step:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #ff6d5a;
+            font-weight: 600;
+        }
+        
+        .tip {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 3px solid #ffc107;
+            padding: 8px 1%;
+            margin: 1% 0;
+            border-radius: 4px;
+            font-size: 0.8em;
+            color: #ffc107;
+        }
+        
+        .code {
+            background: #1a1a1a;
+            padding: 8px 1%;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75em;
+            color: #4ec9b0;
+            overflow-x: auto;
+            margin: 8px 0;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #ff6d5a;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #ea4b48;
+        }
+
+        .copy-btn.copied {
+            background: #4caf50;
+        }
+        
+        .toggle-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .toggle-content.active {
+            max-height: 5000px;
+        }
+        
+        .arrow {
+            transition: transform 0.3s ease;
+            color: #ff6d5a;
+            font-size: 1.2em;
+        }
+        
+        .arrow.rotated {
+            transform: rotate(180deg);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ff6d5a;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 109, 90, 0.4);
+            transition: all 0.3s;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .back-to-top:hover {
+            background: #ea4b48;
+            transform: translateY(-4px);
+        }
+
+        .back-to-top:active {
+            transform: translateY(0);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 12px;
+            color: #888;
+            font-size: 0.75em;
+            margin-top: 1%;
+        }
+
+        .celebration {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4em;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s;
+            z-index: 2000;
+        }
+
+        .celebration.show {
+            opacity: 1;
+            animation: celebrate 1s ease-out;
+        }
+
+        @keyframes celebrate {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="celebration" id="celebration">🎉</div>
+
+    <div class="container">
+        <header>
+            <h1>🔄 n8n Gabay 2026</h1>
+            <div class="subtitle">Kumpletong Guide para sa Filipino Users</div>
+            <div class="progress-container">
+                <div class="progress-bar" id="mainProgress"></div>
+            </div>
+            <div class="progress-text" id="progressText">0 / 30 tasks completed (0%)</div>
+        </header>
+
+        <div class="controls">
+            <button class="btn" onclick="expandAll()">
+                <span>📖</span> Expand All
+            </button>
+            <button class="btn" onclick="collapseAll()">
+                <span>📕</span> Collapse All
+            </button>
+            <div class="font-controls">
+                <button class="font-btn" onclick="changeFontSize('small')" title="Small Font">A-</button>
+                <button class="font-btn" onclick="changeFontSize('medium')" title="Medium Font">A</button>
+                <button class="font-btn" onclick="changeFontSize('large')" title="Large Font">A+</button>
+            </div>
+            <button class="btn" onclick="resetProgress()">
+                <span>🔄</span> Reset Progress
+            </button>
+        </div>
+
+        <div class="filter-section">
+            <span class="filter-label">📊 Filter by:</span>
+            <button class="filter-btn active" onclick="filterDifficulty('all')">All Tasks</button>
+            <button class="filter-btn" onclick="filterDifficulty('hardest')">💀 Hardest</button>
+            <button class="filter-btn" onclick="filterDifficulty('hard')">🔥 Hard</button>
+            <button class="filter-btn" onclick="filterDifficulty('medium')">⚡ Medium</button>
+            <button class="filter-btn" onclick="filterDifficulty('easy')">✨ Easy</button>
+            <button class="filter-btn" onclick="filterDifficulty('easiest')">🌟 Easiest</button>
+            <button class="filter-btn" onclick="filterBookmarked()">⭐ Bookmarked</button>
+        </div>
+
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle Light/Dark Mode">🌙</button>
+
+        <!-- HARDEST TASKS -->
+        <div class="difficulty-section">
+            <div class="difficulty-header" onclick="toggleSection('hardest')">
+                <div style="display: flex; align-items: center; flex-direction: column; align-items: flex-start;">
+                    <div style="display: flex; align-items: center;">
+                        <div class="difficulty-title">💀 Pinakamahirap na Tasks</div>
+                        <span class="section-progress" id="progress-hardest">(0/11)</span>
+                    </div>
+                    <div class="section-progress-bar">
+                        <div class="section-progress-fill" id="progress-bar-hardest"></div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="difficulty-badge">ADVANCED</div>
+                    <span class="arrow" id="arrow-hardest">▼</span>
+                </div>
+            </div>
+            <div class="toggle-content active" id="content-hardest">
+                <div class="task-card" data-task="1">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">1</div>
+                        <span>Custom API Integration with OAuth2</span>
+                        <button class="bookmark-btn" onclick="toggleBookmark(this, 1)" title="Bookmark this task">☆</button>
+                    </div>
+                    <div class="task-desc">Pag-integrate ng third-party APIs na may authentication</div>
+                    <div class="steps">
+                        <div class="step">I-setup ang OAuth2 credentials sa external service</div>
+                        <div class="step">Gumawa ng HTTP Request node sa n8n</div>
+                        <div class="step">I-configure ang Authentication → OAuth2</div>
+                        <div class="step">I-test ang connection at i-save ang credentials</div>
+                        <div class="step">Gamitin ang dynamic parameters gamit ang expressions</div>
+                    </div>
+                    <div class="tip">💡 Tip: I-save ang OAuth tokens sa n8n credentials para secure</div>
+                </div>
+
+                <div class="task-card" data-task="2">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">2</div>
+                        <span>Complex Data Transformation with Code</span>
+                        <button class="bookmark-btn" onclick="toggleBookmark(this, 2)" title="Bookmark this task">☆</button>
+                    </div>
+                    <div class="task-desc">Advanced data manipulation gamit ang JavaScript/Python</div>
+                    <div class="steps">
+                        <div class="step">Magdagdag ng Code node (Function o Function Item)</div>
+                        <div class="step">I-access ang input data: <span class="code">$input.all()</span></div>
+                        <div class="step">Gumawa ng custom logic para sa transformation</div>
+                        <div class="step">I-return ang bagong structured data</div>
+                    </div>
+                    <div class="code" data-code="code1">// Example Code
+const items = $input.all();
+return items.map(item => ({
+  json: {
+    name: item.json.pangalan.toUpperCase(),
+    processed: true,
+    timestamp: new Date().toISOString()
+  }
+}));<button class="copy-btn" onclick="copyCode('code1', this)">Copy</button></div>
+                </div>
+
+                <div class="task-card" data-task="3">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">3</div>
+                        <span>Database Operations (SQL/MongoDB)</span>
+                        <button class="bookmark-btn" onclick="toggleBookmark(this, 3)" title="Bookmark this task">☆</button>
+                    </div>
+                    <div class="task-desc">Direct database queries at complex operations</div>
+                    <div class="steps">
+                        <div class="step">I-install ang Postgres/MySQL/MongoDB node</div>
+                        <div class="step">I-setup ang database credentials</div>
+                        <div class="step">Gumawa ng INSERT, UPDATE, DELETE queries</div>
+                        <div class="step">I-handle ang transactions at error cases</div>
+                        <div class="step">I-optimize ang queries para sa performance</div>
+                    </div>
+                </div>
+
+                <div class="task-card" data-task="4">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">4</div>
+                        <span>Error Handling & Retry Logic</span>
+                        <button class="bookmark-btn" onclick="toggleBookmark(this, 4)" title="Bookmark this task">☆</button>
+                    </div>
+                    <div class="task-desc">Advanced workflow error management</div>
+                    <div class="steps">
+                        <div class="step">I-setup ang Error Trigger node</div>
+                        <div class="step">I-configure ang retry settings sa problematic nodes</div>
+                        <div class="step">Gumawa ng fallback workflows</div>
+                        <div class="step">I-implement ang logging at notifications</div>
+                        <div class="step">I-test ang error scenarios thoroughly</div>
+                    </div>
+                </div>
+
+                <div class="task-card" data-task="5">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">5</div>
+                        <span>Webhook Security & Validation</span>
+                        <button class="bookmark-btn" onclick="toggleBookmark(this, 5)" title="Bookmark this task">☆</button>
+                    </div>
+                    <div class="task-desc">I-secure ang incoming webhooks with authentication</div>
+                    <div class="steps">
+                        <div class="step">I-enable ang Webhook Authentication</div>
+                        <div class="step">I-setup ang Header Authentication o Basic Auth</div>
+                        <div class="step">I-validate ang payload gamit ang Code node</div>
+                        <div class="step">I-implement ang signature verification</div>
+                        <div class="step">I-add ang IP whitelisting kung possible</div>
+                    </div>
+                </div>
+
+                <div class="task-card" data-task="26">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">26</div>
+                        <span>Facebook Messenger Bot Setup</span>
+                        <button class="bookmark-btn" onclick="toggleBookmark(this, 26)" title="Bookmark this task">☆</button>
+                    </div>
+                    <div class="task-desc">Gumawa ng automated Facebook Messenger chatbot</div>
+                    <div class="steps">
+                        <div class="step">Pumunta sa Facebook Developers (developers.facebook.com)</div>
+                        <div class="step">I-create ang bagong App → Select "Business" type</div>
+                        <div class="step">I-add ang "Messenger" product sa app</div>
+                        <div class="step">I-generate ang Page Access Token mula sa Facebook Page</div>
+                        <div class="step">Sa n8n: Magdagdag ng Facebook Messenger Trigger node</div>
+                        <div class="step">I-paste ang Page Access Token at App Secret</div>
+                        <div class="step">I-copy ang Webhook URL mula sa n8n</div>
+                        <div class="step">Sa Facebook: I-setup ang Webhook (paste URL + Verify Token)</div>
+                        <div class="step">I-subscribe sa "messages" at "messaging_postbacks" events</div>
+                        <div class="step">I-test: Mag-message sa Facebook Page</div>
+                    </div>
+                    <div class="tip">💡 Tip: I-save ang Verify Token - kailangan mo ito for webhook verification</div>
+                    <div class="code" data-code="fb1">// Reply to Facebook Messages
+// Gamitin ang Facebook Messenger node
+{
+  "recipient": {
+    "id": "{{$json.sender.id}}"
+  },
+  "message": {
+    "text": "Kumusta! Salamat sa message mo!"
+  }
+}<button class="copy-btn" onclick="copyCode('fb1', this)">Copy</button></div>
+                </div>
+
+                <div class="task-card" data-task="27">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">27</div>
+                        <span>Telegram Bot Creation</span>
+                        <button class="bookmark-btn" onclick="toggleBookmark(this, 27)" title="Bookmark this task">☆</button>
+                    </div>
+                    <div class="task-desc">I-setup ang Telegram Bot para sa automated responses</div>
+                    <div class="steps">
+                        <div class="step">I-open ang Telegram at hanapin ang @BotFather</div>
+                        <div class="step">I-send ang /newbot command</div>
+                        <div class="step">Magbigay ng name at username para sa bot (e.g., MyAwesomeBot)</div>
+                        <div class="step">I-copy ang Bot Token (mahabang string ng characters)</div>
+                        <div class="step">Sa n8n: Magdagdag ng Telegram Trigger node</div>
+                        <div class="step">I-paste ang Bot Token sa credentials</div>
+                        <div class="step">I-select ang "Updates" operation</div>
+                        <div class="step">I-activate ang workflow</div>
+                        <div class="step">I-test: Mag-message sa bot sa Telegram</div>
+                    </div>
+                    <div class="tip">💡 Tip: I-protect ang Bot Token - huwag i-share publicly!</div>
+                    <div class="code" data-code="tg1">// Telegram Bot Commands
+/start - Simulan ang conversation
+/help - Makakuha ng tulong
+/info - Bot information
+
+// Custom commands sa BotFather:
+/setcommands - I-set ang available commands<button class="copy-btn" onclick="copyCode('tg1', this)">Copy</button></div>
+                </div>
+
+                <div class="task-card" data-task="28">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">28</div>
+                        <span>Facebook Messenger - Send Messages</span>
+                        <button class="bookmark-btn" onclick="toggleBookmark(this, 28)" title="Bookmark this task">☆</button>
+                    </div>
+                    <div class="task-desc">Mag-send ng messages, images, at quick replies</div>
+                    <div class="steps">
+                        <div class="step">Magdagdag ng Facebook Messenger node (action)</div>
+                        <div class="step">I-select ang "Send Message" operation</div>
+                        <div class="step">I-enter ang Recipient ID (galing sa trigger data)</div>
+                        <div class="step">Para sa text: I-type ang message sa "Text" field</div>
+                        <div class="step">Para sa image: I-select "Attachment" → Upload image URL</div>
+                        <div class="step">Para sa buttons: I-add ang "Quick Replies" o "Button Template"</div>
+                        <div class="step">I-test ang different message types</div>
+                    </div>
+                    <div class="code" data-code="fb2">// Quick Reply Buttons Example
+{
+  "text": "Pumili ng option:",
+  "quick_replies": [
+    {
+      "content_type": "text",
+      "title": "Option 1",
+      "payload": "OPTION_1"
+    },
+    {
+      "content_type": "text",
+      "title": "Option 2",
+      "payload": "OPTION_2"
+    }
+  ]
+}<button class="copy-btn" onclick="copyCode('fb2', this)">Copy</button></div>
+                </div>
+
+                <div class="task-card" data-task="29">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">29</div>
+                        <span>Telegram - Send Messages & Media</span>
+                        <button class="bookmark-btn" onclick="toggleBookmark(this, 29)" title="Bookmark this task">☆</button>
+                    </div>
+                    <div class="task-desc">Mag-send ng text, photos, documents sa Telegram</div>
+                    <div class="steps">
+                        <div class="step">Magdagdag ng Telegram node (action)</div>
+                        <div class="step">I-select ang operation: "Send Message", "Send Photo", "Send Document"</div>
+                        <div class="step">I-enter ang Chat ID ({{$json.message.chat.id}} mula sa trigger)</div>
+                        <div class="step">Para sa text: I-type sa "Text" field, pwede gumamit ng Markdown</div>
+                        <div class="step">Para sa photo: I-provide ang image URL o file path</div>
+                        <div class="step">I-enable ang "Parse Mode" → "Markdown" para sa formatting</div>
+                        <div class="step">I-add ng "Inline Keyboard" para sa interactive buttons</div>
+                    </div>
+                    <div class="code" data-code="tg2">// Telegram Message with Markdown
+*Bold text*
+_Italic text_
+`Code text`
+[Link text](https://example.com)
+
+// Inline Keyboard Example
+{
+  "inline_keyboard": [[
+    {"text": "Button 1", "callback_data": "btn1"},
+    {"text": "Button 2", "callback_data": "btn2"}
+  ]]
+}<button class="copy-btn" onclick="copyCode('tg2', this)">Copy</button></div>
+                </div>
+
+                <div class="task-card" data-task="30">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">30</div>
+                        <span>Chatbot Conversation Flow (FB & Telegram)</span>
+                        <button class="bookmark-btn" onclick="toggleBookmark(this, 30)" title="Bookmark this task">☆</button>
+                    </div>
+                    <div class="task-desc">Gumawa ng intelligent conversation flow gamit ang IF nodes</div>
+                    <div class="steps">
+                        <div class="step">I-receive ang message mula sa Trigger node</div>
+                        <div class="step">Magdagdag ng IF node para mag-check ng keywords</div>
+                        <div class="step">Condition: {{$json.message.text}} contains "hello" o "hi"</div>
+                        <div class="step">True branch: Send greeting message</div>
+                        <div class="step">False branch: I-add another IF para sa ibang keywords</div>
+                        <div class="step">I-create multiple branches para sa FAQ responses</div>
+                        <div class="step">I-add ng default "Hindi ko maintindihan" response</div>
+                        <div class="step">Optional: I-integrate AI (OpenAI/Claude) para sa smart replies</div>
+                    </div>
+                    <div class="tip">💡 Tip: Gumamit ng Switch node kung maraming conditions (mas organized)</div>
+                    <div class="code" data-code="flow1">// Common Bot Commands Check
+if (message.includes('/start')) {
+  // Welcome message
+} else if (message.includes('/help')) {
+  // Help information
+} else if (message.includes('presyo') || message.includes('price')) {
+  // Pricing info
+} else {
+  // Default response
+}<button class="copy-btn" onclick="copyCode('flow1', this)">Copy</button></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HARD TASKS -->
+        <div class="difficulty-section">
+            <div class="difficulty-header" onclick="toggleSection('hard')">
+                <div style="display: flex; align-items: center; flex-direction: column; align-items: flex-start;">
+                    <div style="display: flex; align-items: center;">
+                        <div class="difficulty-title">🔥 Mahirap na Tasks</div>
+                        <span class="section-progress" id="progress-hard">(0/5)</span>
+                    </div>
+                    <div class="section-progress-bar">
+                        <div class="section-progress-fill" id="progress-bar-hard"></div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="difficulty-badge">INTERMEDIATE</div>
+                    <span class="arrow" id="arrow-hard">▼</span>
+                </div>
+            </div>
+            <div class="toggle-content active" id="content-hard">
+                <div class="task-card" data-task="6">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">6</div>
+                        <span>Conditional Workflows (IF/SWITCH)</span>
+                    </div>
+                    <div class="task-desc">I-create ang branching logic sa workflows</div>
+                    <div class="steps">
+                        <div class="step">Magdagdag ng IF node sa workflow canvas</div>
+                        <div class="step">I-define ang conditions (e.g., status === "pending")</div>
+                        <div class="step">I-connect ang true/false branches sa iba't ibang nodes</div>
+                        <div class="step">I-test ang lahat ng possible conditions</div>
+                    </div>
+                    <div class="tip">💡 Tip: Gamitin ang SWITCH node para sa multiple conditions</div>
+                </div>
+
+                <div class="task-card" data-task="7">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">7</div>
+                        <span>Loop Processing (Split/Merge)</span>
+                    </div>
+                    <div class="task-desc">I-process ang multiple items individually</div>
+                    <div class="steps">
+                        <div class="step">Gamitin ang Split In Batches node</div>
+                        <div class="step">I-configure ang batch size (e.g., 10 items)</div>
+                        <div class="step">I-process ang bawat batch</div>
+                        <div class="step">I-merge ang results gamit ang Merge node</div>
+                    </div>
+                </div>
+
+                <div class="task-card" data-task="8">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">8</div>
+                        <span>Schedule Complex Workflows</span>
+                    </div>
+                    <div class="task-desc">I-automate gamit ang advanced scheduling</div>
+                    <div class="steps">
+                        <div class="step">Magdagdag ng Schedule Trigger node</div>
+                        <div class="step">I-set ang cron expression (e.g., 0 9 * * MON)</div>
+                        <div class="step">I-configure ang timezone settings</div>
+                        <div class="step">I-activate ang workflow</div>
+                    </div>
+                    <div class="code" data-code="code2">Cron Examples:
+"0 9 * * *" - Araw-araw 9am
+"0 */6 * * *" - Every 6 hours
+"0 0 * * MON" - Every Monday midnight<button class="copy-btn" onclick="copyCode('code2', this)">Copy</button></div>
+                </div>
+
+                <div class="task-card" data-task="9">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">9</div>
+                        <span>Multi-API Data Aggregation</span>
+                    </div>
+                    <div class="task-desc">Pagsamahin ang data mula sa iba't ibang sources</div>
+                    <div class="steps">
+                        <div class="step">Gumawa ng multiple HTTP Request nodes</div>
+                        <div class="step">I-merge ang data gamit ang Merge node (Combine mode)</div>
+                        <div class="step">I-transform ang combined data</div>
+                        <div class="step">I-filter at i-sort kung kailangan</div>
+                    </div>
+                </div>
+
+                <div class="task-card" data-task="10">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">10</div>
+                        <span>File Processing & Conversion</span>
+                    </div>
+                    <div class="task-desc">I-manipulate ang files (CSV, JSON, PDF, Images)</div>
+                    <div class="steps">
+                        <div class="step">Gamitin ang Read/Write Binary File nodes</div>
+                        <div class="step">I-convert ang formats (CSV to JSON, etc.)</div>
+                        <div class="step">I-extract ang data mula sa files</div>
+                        <div class="step">I-upload sa cloud storage o email</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MEDIUM TASKS -->
+        <div class="difficulty-section">
+            <div class="difficulty-header" onclick="toggleSection('medium')">
+                <div style="display: flex; align-items: center; flex-direction: column; align-items: flex-start;">
+                    <div style="display: flex; align-items: center;">
+                        <div class="difficulty-title">⚡ Medium na Tasks</div>
+                        <span class="section-progress" id="progress-medium">(0/5)</span>
+                    </div>
+                    <div class="section-progress-bar">
+                        <div class="section-progress-fill" id="progress-bar-medium"></div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="difficulty-badge">MODERATE</div>
+                    <span class="arrow" id="arrow-medium">▼</span>
+                </div>
+            </div>
+            <div class="toggle-content active" id="content-medium">
+                <div class="task-card" data-task="11">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">11</div>
+                        <span>HTTP Request Setup</span>
+                    </div>
+                    <div class="task-desc">Mag-send ng API requests</div>
+                    <div class="steps">
+                        <div class="step">I-drag ang HTTP Request node</div>
+                        <div class="step">I-select ang method (GET, POST, PUT, DELETE)</div>
+                        <div class="step">I-enter ang URL endpoint</div>
+                        <div class="step">I-add ang headers at parameters</div>
+                        <div class="step">I-test gamit ang "Execute Node" button</div>
+                    </div>
+                </div>
+
+                <div class="task-card" data-task="12">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">12</div>
+                        <span>Webhook Creation</span>
+                    </div>
+                    <div class="task-desc">Gumawa ng endpoints para sa external data</div>
+                    <div class="steps">
+                        <div class="step">Magdagdag ng Webhook node sa workflow</div>
+                        <div class="step">I-copy ang generated webhook URL</div>
+                        <div class="step">I-configure ang HTTP method (POST, GET)</div>
+                        <div class="step">I-test gamit ang Postman o browser</div>
+                    </div>
+                </div>
+
+                <div class="task-card" data-task="13">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">13</div>
+                        <span>Data Filtering</span>
+                    </div>
+                    <div class="task-desc">I-filter ang data based sa conditions</div>
+                    <div class="steps">
+                        <div class="step">Gamitin ang Filter node</div>
+                        <div class="step">I-set ang filter conditions</div>
+                        <div class="step">Pumili ng "Keep" o "Discard" matched items</div>
+                        <div class="step">I-test kung tama ang output</div>
+                    </div>
+                </div>
+
+                <div class="task-card" data-task="14">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">14</div>
+                        <span>Email Notifications</span>
+                    </div>
+                    <div class="task-desc">Mag-send ng automated emails</div>
+                    <div class="steps">
+                        <div class="step">I-add ang Send Email node (Gmail, SMTP)</div>
+                        <div class="step">I-configure ang credentials</div>
+                        <div class="step">I-set ang recipient, subject, body</div>
+                        <div class="step">I-add ng dynamic content gamit ang expressions</div>
+                    </div>
+                </div>
+
+                <div class="task-card" data-task="15">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">15</div>
+                        <span>Google Sheets Integration</span>
+                    </div>
+                    <div class="task-desc">Basahin at magsulat sa Google Sheets</div>
+                    <div class="steps">
+                        <div class="step">I-connect ang Google Sheets node</div>
+                        <div class="step">I-authenticate gamit ang Google account</div>
+                        <div class="step">Piliin ang operation (Read, Append, Update)</div>
+                        <div class="step">I-specify ang spreadsheet at sheet name</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EASY TASKS -->
+        <div class="difficulty-section">
+            <div class="difficulty-header" onclick="toggleSection('easy')">
+                <div style="display: flex; align-items: center; flex-direction: column; align-items: flex-start;">
+                    <div style="display: flex; align-items: center;">
+                        <div class="difficulty-title">✨ Easy na Tasks</div>
+                        <span class="section-progress" id="progress-easy">(0/5)</span>
+                    </div>
+                    <div class="section-progress-bar">
+                        <div class="section-progress-fill" id="progress-bar-easy"></div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="difficulty-badge">BEGINNER</div>
+                    <span class="arrow" id="arrow-easy">▼</span>
+                </div>
+            </div>
+            <div class="toggle-content active" id="content-easy">
+                <div class="task-card" data-task="16">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">16</div>
+                        <span>Creating Your First Workflow</span>
+                    </div>
+                    <div class="task-desc">Simulan ang unang n8n workflow</div>
+                    <div class="steps">
+                        <div class="step">I-click ang "+ New Workflow" button</div>
+                        <div class="step">I-drag ang kahit anong node mula sa left panel</div>
+                        <div class="step">I-click ang node para i-configure</div>
+                        <div class="step">I-connect ang nodes gamit ang drag from circles</div>
+                        <div class="step">I-save ang workflow (Ctrl+S)</div>
+                    </div>
+                    <div class="tip">💡 Tip: I-test ang bawat node gamit ang "Execute Node" button</div>
+                </div>
+
+                <div class="task-card" data-task="17">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">17</div>
+                        <span>Using the Manual Trigger</span>
+                    </div>
+                    <div class="task-desc">I-trigger ang workflow manually para sa testing</div>
+                    <div class="steps">
+                        <div class="step">Mag-start ng workflow with Manual Trigger node</div>
+                        <div class="step">I-click ang "Execute Workflow" button sa taas</div>
+                        <div class="step">Panoorin ang execution sa canvas</div>
+                        <div class="step">I-check ang output ng bawat node</div>
+                    </div>
+                </div>
+
+                <div class="task-card" data-task="18">
+                    <div class="task-title">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-number">18</div>
+                        <span>Set Node for Static Data</span>
+                    </div>
+                    <div class="task-desc">Mag-input ng static data for testing</div>
+                    <div class="steps">
+                        <div class="step">Magdagdag ng Set node</div>
+                        <div class="step">I-click "Add Value" at piliin ang type</div>
+                        <div class="step">I-enter ang field name at value</div>
+                        <div class="step">I-execute para makita ang output</div>
+                    </div>
+                </div>
+
+                <div class="task-card" data-task="19">
+                    <div class="task-
